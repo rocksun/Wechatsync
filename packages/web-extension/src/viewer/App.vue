@@ -143,10 +143,10 @@ var service = analytics.getService('syncer')
 var tracker = service.getTracker('UA-48134052-13')
 var axios = require('axios')
 
-;(function ($) {
+;(function($) {
   $.extend($.fn, {
-    makeCssInline: function () {
-      this.each(function (idx, el) {
+    makeCssInline: function() {
+      this.each(function(idx, el) {
         var style = el.style
         var types = [
           'margin',
@@ -173,7 +173,9 @@ var axios = require('axios')
           }
         }
         this.style.cssText = properties.join(';')
-        $(this).children().makeCssInline()
+        $(this)
+          .children()
+          .makeCssInline()
       })
     },
   })
@@ -202,7 +204,7 @@ export default {
         var pTags = Array.prototype.slice.call(
           this.$refs.viewport.getElementsByClassName('p')
         )
-        pTags.forEach((el) => {
+        pTags.forEach(el => {
           if (el.innerHTML == '') {
             el.parentNode.removeChild(el)
           }
@@ -218,7 +220,7 @@ export default {
   },
   mounted() {
     var self = this
-    window.onmessage = function (evt) {
+    window.onmessage = function(evt) {
       try {
         var data = JSON.parse(evt.data)
         console.log('revice', data)
@@ -252,18 +254,18 @@ export default {
   methods: {
     taskUpdate(task) {
       this.taskStatus = task
-      var currentAccount = task.accounts.filter((a) => {
+      var currentAccount = task.accounts.filter(a => {
         return a.status == 'uploading'
       })
 
-      var doneAccounts = task.accounts.filter((a) => {
+      var doneAccounts = task.accounts.filter(a => {
         if (this.lastProcessAccount) {
           return a.status == 'done' && a.type == this.lastProcessAccount.type
         }
         return a.status == 'done'
       })
 
-      var allDoneAccounts = task.accounts.filter((a) => a.status == 'done')
+      var allDoneAccounts = task.accounts.filter(a => a.status == 'done')
 
       var msg = ''
       var title = task.post.title
@@ -313,9 +315,9 @@ export default {
           {
             action: 'getAccount',
           },
-          function (resp) {
+          function(resp) {
             console.log('allAccounts', resp)
-            self.allAccounts = resp.filter((item) => {
+            self.allAccounts = resp.filter(item => {
               if (!item.supportTypes) return true
               return item.supportTypes.indexOf(self.contentType) > -1
             })
@@ -392,6 +394,8 @@ export default {
         post.inline_content = self.$refs.viewport.innerHTML
         // post.markdown = self.currentArtitle.content;
         post.thumb = self.pageData.mainImage
+        post.url = self.pageData.url
+        console.log(self.pageData)
         if (!post.thumb) {
           post.thumb = self.pageData.leadingImage
         }
@@ -412,7 +416,7 @@ export default {
         console.log("文章页抓取内容：" + post.content)
         return post
       }
-      var selectedAc = this.allAccounts.filter((a) => {
+      var selectedAc = this.allAccounts.filter(a => {
         return a.checked
       })
 
@@ -426,7 +430,7 @@ export default {
               accounts: selectedAc,
             },
           },
-          function (resp) {
+          function(resp) {
             console.log('addTask return', resp)
           }
         )
@@ -443,7 +447,6 @@ export default {
   height: 100%;
   width: 350px;
 }
-
 
 .article-all {
   color: #878787;

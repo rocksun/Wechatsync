@@ -15,8 +15,8 @@ export default class WeixinAdapter {
     code = code.substring(code.indexOf('window.wx.commonData'))
     var wx = new Function(
       'window.wx = {}; window.handlerNickname = function(){};' +
-        code +
-        '; return window.wx;'
+      code +
+      '; return window.wx;'
     )()
     console.log(code, wx)
     var commonData = Object.assign({}, wx.commonData)
@@ -46,16 +46,16 @@ export default class WeixinAdapter {
       post_id: 0,
     }
   }
-  
-  async searchAccount({ keyword, begin=0, count=5 }) {
+
+  async searchAccount({ keyword, begin = 0, count = 5 }) {
     var token = weixinMetaCache.token || '442135330'
     const apiURL = `https://mp.weixin.qq.com/cgi-bin/searchbiz?action=search_biz&begin=${begin}&count=${count}&query=${encodeURIComponent(keyword)}&token=${token}&lang=zh_CN&f=json&ajax=1`
     const response = await $.get(apiURL)
     return response
   }
-  
-  async listArticle({ fakeid = '', begin=0, count=5}) {
-  	var token = weixinMetaCache.token || '442135330'
+
+  async listArticle({ fakeid = '', begin = 0, count = 5 }) {
+    var token = weixinMetaCache.token || '442135330'
     const apiURL = `https://mp.weixin.qq.com/cgi-bin/appmsg?action=list_ex&begin=${begin}&count=${count}&fakeid=${fakeid}&type=9&query=&token=${token}&lang=zh_CN&f=json&ajax=1`
     const response = await $.get(apiURL)
     return response
@@ -73,10 +73,10 @@ export default class WeixinAdapter {
     var post = {}
 
     const allMetas = doc
-      .filter(function(index, el) {
+      .filter(function (index, el) {
         return $(el).attr('property') && $(el).attr('content')
       })
-      .map(function() {
+      .map(function () {
         return {
           name: $(this).attr('property'),
           content: $(this).attr('content'),
@@ -119,17 +119,17 @@ export default class WeixinAdapter {
         operate_from: 'Chrome',
         isnew: '0',
         ad_video_transition0: '',
-        can_reward0: '0',
+        can_reward0: '1',
         related_video0: '',
         is_video_recommend0: '-1',
         title0: post.post_title,
-        author0: '',
-        writerid0: '0',
+        author0: '岱军',
+        writerid0: '427019075',
         fileid0: '',
         digest0: post.post_title,
         auto_gen_digest0: '1',
         content0: post.post_content,
-        sourceurl0: '',
+        sourceurl0: post.url,
         need_open_comment0: '1',
         only_fans_can_comment0: '0',
         cdn_url0: '',
@@ -148,14 +148,14 @@ export default class WeixinAdapter {
         vid_type0: '',
         show_cover_pic0: '0',
         shortvideofileid0: '',
-        copyright_type0: '0',
+        copyright_type0: '1',
         releasefirst0: '',
         platform0: '',
-        reprint_permit_type0: '',
-        allow_reprint0: '',
-        allow_reprint_modify0: '',
-        original_article_type0: '',
-        ori_white_list0: '',
+        reprint_permit_type0: '1',
+        allow_reprint0: '0',
+        allow_reprint_modify0: '0',
+        original_article_type0: '科技_前沿产业(云/AR/VR等)',
+        ori_white_list0: '{"white_list":[]}',
         free_content0: '',
         fee0: '0',
         ad_id0: '',
@@ -170,8 +170,10 @@ export default class WeixinAdapter {
         share_video_id0: '',
         dot0: '{}',
         share_voice_id0: '',
-        insert_ad_mode0: '',
-        categories_list0: '[]',
+        insert_ad_mode0: '2',
+        categories_list0: '[1,36,41,48,59,64,65,66]',
+        open_fansmsg0: '1',
+        allow_fast_reprint0: '1',
         sections0:
           '[{"section_index":1000000,"text_content":"​kkk","section_type":9,"ad_available":false}]',
         compose_info0:
@@ -202,7 +204,7 @@ export default class WeixinAdapter {
   async uploadFile(file) {
     var formdata = new FormData()
     var blob = new Blob([file.bits], {
-        type: file.type
+      type: file.type
     });
 
     formdata.append('type', blob.type)
@@ -214,7 +216,7 @@ export default class WeixinAdapter {
 
     var ticket_id = this.meta.commonData.data.user_name,
       ticket = this.meta.commonData.data.ticket,
-      svr_time =  this.meta.commonData.data.time,
+      svr_time = this.meta.commonData.data.time,
       token = this.meta.commonData.data.t,
       seq = new Date().getTime();
 
@@ -225,7 +227,7 @@ export default class WeixinAdapter {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     var url = res.data.cdn_url
-    if(res.data.base_resp.err_msg != 'ok') {
+    if (res.data.base_resp.err_msg != 'ok') {
       console.log(res.data);
       throw new Error('upload failed')
     }
@@ -296,7 +298,7 @@ export default class WeixinAdapter {
         // tag.after("<p><br></p>");
         // span.css("color", "rgb(68, 68, 68)");
         // span.css("font-size", "16px");
-      } catch (e) {}
+      } catch (e) { }
     }
 
     var tags = doc.find('img')
@@ -307,7 +309,7 @@ export default class WeixinAdapter {
         tag.removeAttr('_src')
         tag.attr('style', '')
         wraperTag.replaceWith('<p>' + wraperTag.html() + '</p>')
-      } catch (e) {}
+      } catch (e) { }
     }
 
     var pres = doc.find('a')
@@ -315,7 +317,7 @@ export default class WeixinAdapter {
       const pre = pres.eq(mindex)
       try {
         pre.after(pre.html()).remove()
-      } catch (e) {}
+      } catch (e) { }
     }
 
     var processEmptyLine = function (idx, el) {
@@ -324,7 +326,7 @@ export default class WeixinAdapter {
       var img = $obj.find('img')
       var brs = $obj.find('br')
       if (originalText == '') {
-        ;(function () {
+        ; (function () {
           if (img.length) return
           if (!brs.length) return
           $obj.remove()
@@ -352,8 +354,8 @@ export default class WeixinAdapter {
     post.content = $('<div>')
       .append(
         "<section style='margin-left: 6px;margin-right: 6px;line-height: 1.75em;'>" +
-          doc.clone().html() +
-          '</section>'
+        doc.clone().html() +
+        '</section>'
       )
       .html()
 
@@ -494,16 +496,16 @@ function formatError(e) {
       index: !1,
     }
   switch (
-    ('undefined' != typeof e.ret
-      ? (r = 1 * e.ret)
-      : e.base_resp &&
-        'undefined' != typeof e.base_resp.ret &&
-        (r = 1 * e.base_resp.ret),
+  ('undefined' != typeof e.ret
+    ? (r = 1 * e.ret)
+    : e.base_resp &&
+    'undefined' != typeof e.base_resp.ret &&
+    (r = 1 * e.base_resp.ret),
     1 * r)
   ) {
     case -8:
     case -6:
-      ;(e.ret = '-6'), (a.errmsg = '请输入验证码')
+      ; (e.ret = '-6'), (a.errmsg = '请输入验证码')
       break
 
     case 62752:
@@ -656,35 +658,35 @@ function formatError(e) {
       break
 
     case 10801:
-      ;(a.errmsg =
+      ; (a.errmsg =
         '标题不能有违反公众平台协议、相关法律法规和政策的内容，请重新编辑。'),
         (a.index = 1 * e.msg)
       break
 
     case 10802:
-      ;(a.errmsg =
+      ; (a.errmsg =
         '作者不能有违反公众平台协议、相关法律法规和政策的内容，请重新编辑。'),
         (a.index = 1 * e.msg)
       break
 
     case 10803:
-      ;(a.errmsg = '敏感链接，请重新添加。'), (a.index = 1 * e.msg)
+      ; (a.errmsg = '敏感链接，请重新添加。'), (a.index = 1 * e.msg)
       break
 
     case 10804:
-      ;(a.errmsg =
+      ; (a.errmsg =
         '摘要不能有违反公众平台协议、相关法律法规和政策的内容，请重新编辑。'),
         (a.index = 1 * e.msg)
       break
 
     case 10806:
-      ;(a.errmsg =
+      ; (a.errmsg =
         '正文不能有违反公众平台协议、相关法律法规和政策的内容，请重新编辑。'),
         (a.index = 1 * e.msg)
       break
 
     case 10808:
-      ;(a.errmsg =
+      ; (a.errmsg =
         '推荐语不能有违反公众平台协议、相关法律法规和政策的内容，请重新编辑。'),
         (a.index = 1 * e.msg)
       break
@@ -730,17 +732,17 @@ function formatError(e) {
       break
 
     case 13002:
-      ;(a.errmsg = '该广告卡片已过期，删除后才可保存成功'),
+      ; (a.errmsg = '该广告卡片已过期，删除后才可保存成功'),
         (a.index = 1 * e.msg)
       break
 
     case 13003:
-      ;(a.errmsg = '已有文章插入过该广告卡片，一个广告卡片仅可插入一篇文章'),
+      ; (a.errmsg = '已有文章插入过该广告卡片，一个广告卡片仅可插入一篇文章'),
         (a.index = 1 * e.msg)
       break
 
     case 13004:
-      ;(a.errmsg = '该广告卡片与图文消息位置不一致'), (a.index = 1 * e.msg)
+      ; (a.errmsg = '该广告卡片与图文消息位置不一致'), (a.index = 1 * e.msg)
       break
 
     case 15801:
