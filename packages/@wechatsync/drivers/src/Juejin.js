@@ -114,6 +114,7 @@ export default class JuejinAdapter {
 
   addPromotion(post) {
     var sharcode = `<blockquote><p>本文使用 <a href="https://juejin.cn/post/6940875049587097631" class="internal">文章同步助手</a> 同步</p></blockquote>`
+    var sharcode = ``
     post.content = post.content.trim() + `${sharcode}`
   }
 }
