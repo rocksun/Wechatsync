@@ -351,13 +351,15 @@ export default class WeixinAdapter {
     }
 
     doc.find('br').each(processBr)
-    post.content = $('<div>')
-      .append(
-        "<section style='margin-left: 6px;margin-right: 6px;line-height: 1.75em;'>" +
-        doc.clone().html() +
-        '</section>'
-      )
-      .html()
+    // post.content = $('<div>')
+    //   .append(
+    //     "<section style='margin-left: 6px;margin-right: 6px;line-height: 1.75em;'>" +
+    //     doc.clone().html() +
+    //     '</section>'
+    //   )
+    //   .html()
+
+    post.content = doc.clone().find('article:first').html()
 
     console.log('post.content', post.content)
     var inlineCssHTML = juice.inlineContent(
