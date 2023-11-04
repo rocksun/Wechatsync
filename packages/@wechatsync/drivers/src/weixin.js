@@ -359,7 +359,17 @@ export default class WeixinAdapter {
     //   )
     //   .html()
 
-    post.content = doc.clone().find('article:first').html()
+    var tmpContent = doc.clone()
+    var articles = tmpContent.find('article');
+    if (articles.length > 0) {
+      post.content = tmpContent.find('article:first').html()
+    } else {
+      post.content = tmpContent.html()
+      // alert(post.content)
+    }
+
+
+    // post.content = doc.clone().find('article:first').html()
 
     console.log('post.content', post.content)
     var inlineCssHTML = juice.inlineContent(
