@@ -497,7 +497,11 @@ export default class WeixinAdapter {
    `
     )
     console.log('inlineCssHTML new', inlineCssHTML)
-    post.content = inlineCssHTML
+
+    var yyzs = `
+      <section class="mp_profile_iframe_wrp custom_select_card_wrp" > <mp-common-profile class="js_uneditable custom_select_card mp_profile_iframe mp_common_widget" data-pluginname="mpprofile" data-id="MzIzMzcxMTUxOQ==" data-headimg="http://mmbiz.qpic.cn/mmbiz_png/6DnImtsGlT7j5JTF7hVibibxR7I6b1tV4cN0EBtHvN4l9d49vZR4WlkPqvk4eqy6MJYlCibgjOxYgZ7bORX3FVHDA/0?wx_fmt=png" data-nickname="云云众生s" data-alias="yylives_cc" data-signature="云原生践行者" data-from="0" data-is_biz_ban="0" contenteditable="false"></mp-common-profile></section>
+        `;
+    post.content = inlineCssHTML + yyzs;
   }
 }
 
