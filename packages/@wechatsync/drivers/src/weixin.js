@@ -308,7 +308,7 @@ export default class WeixinAdapter {
       try {
         tag.removeAttr('_src')
         tag.attr('style', '')
-        wraperTag.replaceWith('<p>' + wraperTag.html() + '</p>')
+        wraperTag.replaceWith('<p class="special">' + wraperTag.html() + '</p>')
       } catch (e) { }
     }
 
@@ -489,6 +489,11 @@ export default class WeixinAdapter {
     p {
       color: rgb(51, 51, 51);
       font-size: 15px;
+    }
+
+    .special {
+      text-align: center;
+      display: inline;
     }
 
     li p {
