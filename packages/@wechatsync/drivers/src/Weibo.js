@@ -285,8 +285,8 @@ export default class WeiboAdapter {
 
 
   addPromotion(post) {
-    // var sharcode = `<blockquote>本文使用 <a href="https://zhuanlan.zhihu.com/p/358098152" class="internal">文章同步助手</a> 同步</blockquote>`
-    var sharcode = ``
+    var sharcode = `<blockquote>本文在<a href="https://yylives.cc/" class="internal">云云众生</a>（<a href="https://yylives.cc/" class="internal">https://yylives.cc/</a>）首发，欢迎大家访问。</blockquote>`
+    // var sharcode = ``
     post.content = post.content.trim() + `${sharcode}`
   }
 }

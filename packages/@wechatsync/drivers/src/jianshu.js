@@ -118,8 +118,8 @@ export default class JianShuAdapter {
   }
 
   async uploadFile(file) {
-    const tokenReq = await axios.get('https://www.jianshu.com/upload_images/token.json?filename='+ new Date().getTime() +'.png')
-    if(tokenReq.data.token) {
+    const tokenReq = await axios.get('https://www.jianshu.com/upload_images/token.json?filename=' + new Date().getTime() + '.png')
+    if (tokenReq.data.token) {
       var blob = new Blob([file.bits], {
         type: file.type
       });
@@ -135,7 +135,7 @@ export default class JianShuAdapter {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
 
-      if(!res.data.url) {
+      if (!res.data.url) {
         console.log(res.data);
         throw new Error('upload failed')
       }
@@ -195,7 +195,7 @@ export default class JianShuAdapter {
       var img = $obj.find('img')
       var brs = $obj.find('br')
       if (originalText == '') {
-        ;(function () {
+        ; (function () {
           if (img.length) return
           if (!brs.length) return
           $obj.remove()
@@ -269,7 +269,7 @@ export default class JianShuAdapter {
   }
 
   addPromotion(post) {
-    var sharcode = `<blockquote><p>本文使用 <a href="https://www.jianshu.com/p/5709df6fb58d" class="internal">文章同步助手</a> 同步</p></blockquote>`
+    var sharcode = `<blockquote>本文在<a href="https://yylives.cc/" class="internal">云云众生</a>（<a href="https://yylives.cc/" class="internal">https://yylives.cc/</a>）首发，欢迎大家访问。</blockquote>`
     post.content = post.content.trim() + `${sharcode}`
   }
 }
