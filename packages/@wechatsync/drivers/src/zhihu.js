@@ -113,7 +113,7 @@ export default class ZhiHuAdapter {
   }
 
   untiImageDone(image_id) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       function waitToNext() {
         console.log('untiImageDone', image_id);
         (async () => {
@@ -238,7 +238,7 @@ export default class ZhiHuAdapter {
     tools.doPreFilter(div)
     tools.processDocCode(div)
 
-    var removeIfEmpty = function() {
+    var removeIfEmpty = function () {
       var $obj = $(this)
       var originalText = $obj.text()
       if (originalText == '') {
@@ -246,7 +246,7 @@ export default class ZhiHuAdapter {
       }
     }
 
-    var removeIfNoImageEmpty = function() {
+    var removeIfNoImageEmpty = function () {
       var $obj = $(this)
       var originalText = $obj.text()
       var img = $obj.find('img')
@@ -261,8 +261,8 @@ export default class ZhiHuAdapter {
       var img = $obj.find('img')
       var brs = $obj.find('br')
       if (originalText == '') {
-        ;(function () {
-          if (img.length){
+        ; (function () {
+          if (img.length) {
             console.log('has img skip')
             return
           }
@@ -273,7 +273,7 @@ export default class ZhiHuAdapter {
           $obj.remove()
         })()
       } else {
-        if(originalText.trim() == '') {
+        if (originalText.trim() == '') {
           console.log('processEmptyLine', $obj)
           $obj.remove()
         }
@@ -281,7 +281,7 @@ export default class ZhiHuAdapter {
       // try to replace as h2;
     }
 
-    var highlightTitle = function() {
+    var highlightTitle = function () {
       var strongTag = $obj.find('strong').eq(0)
       var childStrongText = strongTag.text()
       var isHead = false
@@ -328,9 +328,9 @@ export default class ZhiHuAdapter {
     // doc.find('section').each(removeIfNoImageEmpty)
 
     // remove empty break line
-    doc.find('section').each(function() {
+    doc.find('section').each(function () {
       var NewElement = $("<div />");
-      $.each(this.attributes, function(i, attrib){
+      $.each(this.attributes, function (i, attrib) {
         $(NewElement).attr(attrib.name, attrib.value);
       });
       // Replace the current element with the new one and carry over the contents
@@ -377,7 +377,8 @@ export default class ZhiHuAdapter {
   }
 
   addPromotion(post) {
-    var sharcode = `<blockquote><p>本文使用 <a href="https://zhuanlan.zhihu.com/p/358098152" class="internal">文章同步助手</a> 同步</p></blockquote>`
+    var sharcode = `<blockquote>本文在<a href="https://yylives.cc/" class="internal">云云众生</a>（<a href="https://yylives.cc/" class="internal">https://yylives.cc/</a>）首发，欢迎大家访问。</blockquote>`
+    // var sharcode = ``
     post.content = post.content.trim() + `${sharcode}`
   }
 }
