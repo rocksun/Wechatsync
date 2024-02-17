@@ -32,12 +32,12 @@ export default class CnblogAdapter {
     //
     this.skipReadImage = true
     modifyRequestHeaders('i.cnblogs.com/', {
-    	Origin: 'https://i.cnblogs.com',
+      Origin: 'https://i.cnblogs.com',
       Referer: 'https://i.cnblogs.com/'
     }, [
-    	'*://i.cnblogs.com/*',
-    ], function(details) {
-			// parse token from cookie inject to headers
+      '*://i.cnblogs.com/*',
+    ], function (details) {
+      // parse token from cookie inject to headers
       if (details.url.indexOf('i.cnblogs.com/api') > -1) {
         parseTokenAndToHeaders(details, 'XSRF-TOKEN', 'x-xsrf-token')
       }
@@ -76,50 +76,50 @@ export default class CnblogAdapter {
   }
 
   async addPost(post) {
-    if(!post.markdown) {
+    if (!post.markdown) {
       var turndownService = new turndown()
       turndownService.use(tools.turndownExt)
-    	var markdown = turndownService.turndown(post.post_content)
-    	console.log(markdown);
-    	post.markdown = markdown
+      var markdown = turndownService.turndown(post.post_content)
+      console.log(markdown);
+      post.markdown = markdown
     }
     var postId = null
     try {
       var res = await axios.post('https://i.cnblogs.com/api/posts', {
-          "id": null,
-          "postType": 2,
-          "accessPermission": 0,
-          "title": post.post_title,
-          "url": null,
-          "postBody": post.markdown,
-          "categoryIds": null,
-          "inSiteCandidate": false,
-          "inSiteHome": false,
-          "siteCategoryId": null,
-          "blogTeamIds": null,
-          "isPublished": false,
-          "displayOnHomePage": false,
-          "isAllowComments": true,
-          "includeInMainSyndication": true,
-          "isPinned": false,
-          "isOnlyForRegisterUser": false,
-          "isUpdateDateAdded": false,
-          "entryName": null,
-          "description": null,
-          "tags": null,
-          "password": null,
-          "datePublished": new Date().toISOString(),
-          "isMarkdown": true,
-          "isDraft": true,
-          "autoDesc": null,
-          "changePostType": false,
-          "blogId": 0,
-          "author": null,
-          "removeScript": false,
-          "clientInfo": null,
-          "changeCreatedTime": false,
-          "canChangeCreatedTime": false
-        })
+        "id": null,
+        "postType": 2,
+        "accessPermission": 0,
+        "title": post.post_title,
+        "url": null,
+        "postBody": post.markdown,
+        "categoryIds": null,
+        "inSiteCandidate": false,
+        "inSiteHome": false,
+        "siteCategoryId": null,
+        "blogTeamIds": null,
+        "isPublished": false,
+        "displayOnHomePage": false,
+        "isAllowComments": true,
+        "includeInMainSyndication": true,
+        "isPinned": false,
+        "isOnlyForRegisterUser": false,
+        "isUpdateDateAdded": false,
+        "entryName": null,
+        "description": null,
+        "tags": null,
+        "password": null,
+        "datePublished": new Date().toISOString(),
+        "isMarkdown": true,
+        "isDraft": true,
+        "autoDesc": null,
+        "changePostType": false,
+        "blogId": 0,
+        "author": null,
+        "removeScript": false,
+        "clientInfo": null,
+        "changeCreatedTime": false,
+        "canChangeCreatedTime": false
+      })
       console.log('CNBLOG addPost', res)
       postId = res.data.id
     } catch (e) {
@@ -161,6 +161,11 @@ export default class CnblogAdapter {
     } catch (e) {
       console.log('preEdit.error', e)
     }
+  }
+
+  addPromotion(post) {
+    var sharcode = `<blockquote>本文在<a href="https://yylives.cc/" class="internal">云云众生</a>（<a href="https://yylives.cc/" class="internal">https://yylives.cc/</a>）首发，欢迎大家访问。</blockquote>`
+    post.content = post.content.trim() + `${sharcode}`
   }
 }
 

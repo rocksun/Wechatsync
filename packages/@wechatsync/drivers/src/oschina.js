@@ -1,7 +1,7 @@
 
 function getDocumentByHTML(html, type = 'text/html') {
-	const parser = new DOMParser()
-	const htmlDoc = parser.parseFromString(html, type)
+  const parser = new DOMParser()
+  const htmlDoc = parser.parseFromString(html, type)
   return htmlDoc
 }
 
@@ -11,10 +11,10 @@ export default class OsChinaAdapter {
   constructor() {
     this.name = 'oschina'
     modifyRequestHeaders('my.oschina.net/u', {
-    	Origin: 'https://my.oschina.net',
+      Origin: 'https://my.oschina.net',
       Referer: 'https://my.oschina.net/'
     }, [
-    	'*://my.oschina.net/u/*',
+      '*://my.oschina.net/u/*',
     ])
   }
 
@@ -55,7 +55,7 @@ export default class OsChinaAdapter {
   }
 
   async editPost(post_id, post) {
-    if(!post.markdown) {
+    if (!post.markdown) {
       var turndownService = new turndown()
       turndownService.use(tools.turndownExt)
       var markdown = turndownService.turndown(post.post_content)
@@ -68,13 +68,13 @@ export default class OsChinaAdapter {
     const docPage = getDocumentByHTML(writePageRes.data)
     const userTokenEl = docPage.querySelector('[data-name=g_user_code]')
 
-    if(!userTokenEl) {
-    	throw new Error('可能未登录？')
+    if (!userTokenEl) {
+      throw new Error('可能未登录？')
     }
 
     const userToken = userTokenEl.getAttribute('data-value')
     const postStruct = {
-    	draft: 0,
+      draft: 0,
       id: null,
       user_code: userToken,
       title: post.post_title,
@@ -89,17 +89,17 @@ export default class OsChinaAdapter {
       as_top: 0,
       downloadImg: 1,
       isRecommend: 0,
-  	}
+    }
 
     const res = await $.ajax({
-    	url: `https://my.oschina.net/u/${meta.uid}/blog/save_draft`,
+      url: `https://my.oschina.net/u/${meta.uid}/blog/save_draft`,
       type: 'POST',
       dataType: 'JSON',
       data: postStruct,
     })
 
-    if(res.code != 1) {
-    	throw new Error(res.message)
+    if (res.code != 1) {
+      throw new Error(res.message)
     }
 
     post_id = res.result.draft
@@ -155,5 +155,10 @@ export default class OsChinaAdapter {
     } catch (e) {
       console.log('preEdit.error', e)
     }
+  }
+
+  addPromotion(post) {
+    var sharcode = `<blockquote>本文在<a href="https://yylives.cc/" class="internal">云云众生</a>（<a href="https://yylives.cc/" class="internal">https://yylives.cc/</a>）首发，欢迎大家访问。</blockquote>`
+    post.content = post.content.trim() + `${sharcode}`
   }
 }

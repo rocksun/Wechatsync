@@ -35,18 +35,18 @@ export default class _51CtoAdapter {
           .replace("sign = '", '')
           .replace("';", '')
           .trim()
-          uploadSign = signStr
+        uploadSign = signStr
       } catch (e) {
         console.log('51cto', e)
       }
     }
-      _cacheMeta = {
-        rawStr: rawStr,
-        uploadSign: uploadSign,
-        csrf: htmlDoc
-          .querySelector('meta[name=csrf-token]')
-          .getAttribute('content'),
-      }
+    _cacheMeta = {
+      rawStr: rawStr,
+      uploadSign: uploadSign,
+      csrf: htmlDoc
+        .querySelector('meta[name=csrf-token]')
+        .getAttribute('content'),
+    }
     console.log('51cto', _cacheMeta)
     return {
       uid: uid,
@@ -88,7 +88,7 @@ export default class _51CtoAdapter {
         cate_id: '',
         custom_id: '',
         tag: '',
-        abstract:'',
+        abstract: '',
         is_hide: 0,
         did: '',
         blog_id: '',
@@ -179,6 +179,11 @@ export default class _51CtoAdapter {
     } catch (e) {
       console.log('preEdit.error', e)
     }
+  }
+
+  addPromotion(post) {
+    var sharcode = `<blockquote>本文在<a href="https://yylives.cc/" class="internal">云云众生</a>（<a href="https://yylives.cc/" class="internal">https://yylives.cc/</a>）首发，欢迎大家访问。</blockquote>`
+    post.content = post.content.trim() + `${sharcode}`
   }
 
   // editImg(img, source) {
