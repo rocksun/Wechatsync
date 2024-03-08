@@ -56,17 +56,17 @@ display: none;">
       widgetRoot = widgetDom.createShadowRoot
         ? widgetDom.createShadowRoot()
         : widgetDom.webkitCreateShadowRoot
-        ? widgetDom.webkitCreateShadowRoot()
-        : widgetDom
+          ? widgetDom.webkitCreateShadowRoot()
+          : widgetDom
     var widgetWrap = document.createElement(
-        ChromeVersion >= 37 ? 'dialog' : 'div'
-      ),
+      ChromeVersion >= 37 ? 'dialog' : 'div'
+    ),
       $widgetPage = $(
         '<iframe src="' +
-          READER_VIEW_PAGE_SRC +
-          '" name="' +
-          window.location.href +
-          '"></iframe>'
+        READER_VIEW_PAGE_SRC +
+        '" name="' +
+        window.location.href +
+        '"></iframe>'
       )
 
     $widgetPage.css({
@@ -118,9 +118,27 @@ display: none;">
 
   function adoptableArticle() {
     try {
-      var $reader = new Readability(document.cloneNode(true)).parse()
+
+      doc = document.cloneNode(true)
+      // 获取所有需要删除的 div 元素
+      const divsToRemove = document.doc('.markdown-heading');
+      // 遍历每个 div 元素
+      divsToRemove.forEach(div => {
+        // 获取 h2 元素
+        const h2Element = div.querySelector('.heading-element');
+        // 克隆 h2 元素以保留其内容
+        const clonedH2 = h2Element.cloneNode(true);
+        // 获取 div 的父级元素
+        const parentElement = div.parentNode;
+        // 在父级元素中插入克隆的 h2 元素
+        parentElement.insertBefore(clonedH2, div);
+        // 移除原始的 div 元素
+        parentElement.removeChild(div);
+      });
+
+      var $reader = new Readability(doc).parse()
       console.log('adoptableArticle', $reader)
-    } catch(e) {
+    } catch (e) {
       console.log('Readability.error', e)
     }
     var $article = $(ReaderArticleFinderJS.adoptableArticle().outerHTML)
@@ -223,12 +241,12 @@ display: none;">
     if (ReaderArticleFinderJS.isReaderModeAvailable()) {
       // showArticle();
       findAndShow(
-        function () {},
+        function () { },
         function () {
           showArticle()
         }
       )
-    } else if(hasArticle()) {
+    } else if (hasArticle()) {
       function allocate() {
         var $article = getArticle();
         var $dom = $($article.content);
@@ -261,7 +279,7 @@ display: none;">
 
     } else {
       const artitleDoms = $('article');
-      if(artitleDoms.length) {
+      if (artitleDoms.length) {
         function allocate() {
           var thePageData = {
             article: artitleDoms[0].outerHTML,
@@ -294,7 +312,7 @@ display: none;">
       } else {
         alert('无法识别到文章')
       }
-      
+
     }
   } else {
     $('#syncd-pannel').show()
@@ -317,7 +335,7 @@ display: none;">
       if (data.method == 'closeMe') {
         widgetDomMain.css('display', 'none')
       }
-    } catch (e) {}
+    } catch (e) { }
   })
 
   chrome.runtime.onMessage.addListener(function (
@@ -370,29 +388,29 @@ chrome.extension.onRequest.addListener(function (
 // window.frames['uchome-ifrHtmlEditor'].window.frames['HtmlEditor'].document.body.innerHTML
 // window.onload = function() {
 console.log('discuz_cache')
-if (window.location.href.indexOf('loaddraft') > -1 || ( document.referrer && document.referrer.indexOf('loaddraft') > -1)){
-    ;(function loop() {
-    if(window.frames['uchome-ifrHtmlEditor'] || window.e_iframe) {
+if (window.location.href.indexOf('loaddraft') > -1 || (document.referrer && document.referrer.indexOf('loaddraft') > -1)) {
+  ; (function loop() {
+    if (window.frames['uchome-ifrHtmlEditor'] || window.e_iframe) {
       function extractPage(cacheData) {
         // resp.result.discuz_cache
         console.log('extractPage', cacheData)
-        if(document.querySelector('#subject')) {
+        if (document.querySelector('#subject')) {
           console.log('set title')
           document.querySelector('#subject').value = cacheData.title
         } else {
           console.log('no title')
         }
-        if(window.e_iframe) {
+        if (window.e_iframe) {
           window.e_iframe.contentWindow.document.body.innerHTML = cacheData.content
         } else {
           console.log('not frame')
         }
         // for another
-        if(window.frames['uchome-ifrHtmlEditor']) {
+        if (window.frames['uchome-ifrHtmlEditor']) {
           document.querySelector('#title').value = cacheData.title
           window.frames['uchome-ifrHtmlEditor'].window.frames[
-             'HtmlEditor'
-           ].document.body.innerHTML = cacheData.content
+            'HtmlEditor'
+          ].document.body.innerHTML = cacheData.content
         }
       }
       chrome.extension.sendMessage(
@@ -400,7 +418,7 @@ if (window.location.href.indexOf('loaddraft') > -1 || ( document.referrer && doc
           action: 'getCache',
           name: 'discuz_cache',
         },
-        function(resp) {
+        function (resp) {
           var data = JSON.parse(resp.result.discuz_cache)
           // alert(resp.result.discuz_cache)
           console.log('getCache return', resp)
