@@ -121,9 +121,10 @@ display: none;">
 
       doc = document.cloneNode(true)
       // 获取所有需要删除的 div 元素
-      const divsToRemove = document.doc('.markdown-heading');
+      const divsToRemove = doc.querySelectorAll('.markdown-heading');
       // 遍历每个 div 元素
       divsToRemove.forEach(div => {
+        console.log("remove:", div)
         // 获取 h2 元素
         const h2Element = div.querySelector('.heading-element');
         // 克隆 h2 元素以保留其内容
@@ -223,7 +224,26 @@ display: none;">
     // var av = ReaderArticleFinderJS.isReaderModeAvailable();
     var arcArticle = null;
     try {
-      arcArticle = new Readability(document.cloneNode(true)).parse()
+
+      doc = document.cloneNode(true)
+      // 获取所有需要删除的 div 元素
+      const divsToRemove = doc.querySelectorAll('.markdown-heading');
+      // 遍历每个 div 元素
+      divsToRemove.forEach(div => {
+        console.log("remove:", div)
+        // 获取 h2 元素
+        const h2Element = div.querySelector('.heading-element');
+        // 克隆 h2 元素以保留其内容
+        const clonedH2 = h2Element.cloneNode(true);
+        // 获取 div 的父级元素
+        const parentElement = div.parentNode;
+        // 在父级元素中插入克隆的 h2 元素
+        parentElement.insertBefore(clonedH2, div);
+        // 移除原始的 div 元素
+        parentElement.removeChild(div);
+      });
+
+      arcArticle = new Readability(doc).parse()
       // arcArticle = true;
       console.log('adoptableArticle', arcArticle)
     } catch (e) {
