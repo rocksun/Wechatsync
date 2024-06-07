@@ -119,9 +119,9 @@ display: none;">
   function adoptableArticle() {
     try {
 
-      doc = document.cloneNode(true)
+      // doc = document.cloneNode(true)
       // 获取所有需要删除的 div 元素
-      const divsToRemove = doc.querySelectorAll('.markdown-heading');
+      const divsToRemove = document.querySelectorAll('.markdown-heading');
       // 遍历每个 div 元素
       divsToRemove.forEach(div => {
         console.log("remove:", div)
